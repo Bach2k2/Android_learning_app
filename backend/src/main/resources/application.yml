@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: japanese-learning-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${DB_URL:jdbc:postgresql://localhost:5432/japanese_app}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:postgres}}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    org.springframework.security: INFO
+
+app:
+  security:
+    jwt:
+      issuer: ${JWT_ISSUER:japanese-app}
+      accessTokenTtlSeconds: ${JWT_ACCESS_TTL_SECONDS:900}
+      refreshTokenTtlSeconds: ${JWT_REFRESH_TTL_SECONDS:2592000}
+      # Base64-encoded 256-bit key recommended. For dev, you can set a long random string.
+      secret: ${JWT_SECRET:dev-secret-change-me-dev-secret-change-me}
+
+  ai:
+    ollamaBaseUrl: ${OLLAMA_BASE_URL:http://localhost:11434}
+    model: ${OLLAMA_MODEL:llama3.1}
