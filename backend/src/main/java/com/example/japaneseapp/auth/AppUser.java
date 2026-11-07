@@ -22,6 +22,10 @@ public class AppUser {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 16)
+    private UserRole role = UserRole.USER;
+
     protected AppUser() {
     }
 
@@ -30,6 +34,15 @@ public class AppUser {
         this.email = email;
         this.passwordHash = passwordHash;
         this.createdAt = createdAt;
+        this.role = UserRole.USER;
+    }
+
+    public AppUser(UUID id, String email, String passwordHash, Instant createdAt, UserRole role) {
+        this.id = id;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.createdAt = createdAt;
+        this.role = role;
     }
 
     public UUID getId() {
@@ -46,5 +59,21 @@ public class AppUser {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updatePasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void updateRole(UserRole role) {
+        this.role = role;
     }
 }

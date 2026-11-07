@@ -1,0 +1,44 @@
+# IDE and local machine files
+.idea/
+**/.idea/
+*.iml
+local.properties
+**/local.properties
+
+# Gradle and Kotlin build state
+.gradle/
+**/.gradle/
+build/
+**/build/
+bin/
+**/bin/
+.kotlin/
+**/.kotlin/
+
+# Android native build outputs
+.externalNativeBuild/
+**/.externalNativeBuild/
+.cxx/
+**/.cxx/
+captures/
+**/captures/
+*.apk
+*.aab
+*.ap_
+*.class
+*.hprof
+
+# Local credentials and signing keys
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+
+# Logs and operating system files
+*.log
+.DS_Store
+Thumbs.db

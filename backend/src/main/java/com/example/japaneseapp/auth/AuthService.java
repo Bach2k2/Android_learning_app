@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -37,11 +38,19 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(String email, String rawPassword) {
+        if (!PasswordPolicy.fitsBcrypt(rawPassword)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Password exceeds the supported byte length");
+        }
         if (userRepository.existsByEmailIgnoreCase(email)) {
             throw new ApiException(HttpStatus.CONFLICT, "Email already registered");
         }
 
-        var user = new AppUser(UUID.randomUUID(), email.trim().toLowerCase(), passwordEncoder.encode(rawPassword), Instant.now());
+        var user = new AppUser(
+                UUID.randomUUID(),
+                email.trim().toLowerCase(Locale.ROOT),
+                passwordEncoder.encode(rawPassword),
+                Instant.now()
+        );
         userRepository.save(user);
 
         return issueTokens(user);

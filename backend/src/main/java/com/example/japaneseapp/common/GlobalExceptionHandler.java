@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -65,6 +66,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleInvalidRequest(Exception ex, HttpServletRequest req) {
         return ResponseEntity.badRequest()
                 .body(ApiError.of(400, "Bad Request", "Invalid request", req.getRequestURI(), null));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataConflict(DataIntegrityViolationException ex, HttpServletRequest req) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiError.of(409, "Conflict", "The requested change conflicts with existing data",
+                        req.getRequestURI(), null));
     }
 
     @ExceptionHandler(Exception.class)
